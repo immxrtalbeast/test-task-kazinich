@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	targetRTP := 0.99
+	targetRTP := 0.5
 	if targetRTP <= 0.0 || targetRTP > 1.0 {
 		panic("rtp should be ∈(0, 1.0]")
 	}
