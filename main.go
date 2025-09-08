@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"flag"
-	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
@@ -13,15 +12,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/immxrtalbeast/rtp-multiplier/internal/controller"
 	"github.com/immxrtalbeast/rtp-multiplier/internal/service"
+	"github.com/prometheus/common/log"
 )
 
 func main() {
 	rtp := fetchRTP()
-	log := setupLogger()
-	log.Info("starting RTP service")
-	log.Info("rtp", slog.Float64("rtp", rtp))
-
-	rtpService := service.NewRTPMultiplierService(rtp, log)
+	rtpService := service.NewRTPMultiplierService(rtp)
 	rtpController := controller.NewRTPController(*rtpService)
 
 	router := gin.Default()
@@ -65,14 +61,4 @@ func fetchRTP() float64 {
 	}
 
 	return rtp
-}
-
-func setupLogger() *slog.Logger {
-	var log *slog.Logger
-
-	log = slog.New(
-		slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}),
-	)
-
-	return log
 }
