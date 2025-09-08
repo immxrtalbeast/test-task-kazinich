@@ -18,17 +18,19 @@ func NewRTPMultiplierService(targetRTP float64, log *slog.Logger) *RTPMultiplier
 	}
 }
 
-func (s *RTPMultiplierService) GenerateMultiplier() float64 {
-	const op = "service.GenerateMultiplier"
-	s.log.With(
-		slog.String("op", op),
+func (s *RTPMultiplierService) Generate() float64 {
+	log := s.log.With(
 		slog.Float64("rtp", s.targetRTP),
 	)
-	ideal := math.Sqrt(s.targetRTP) * 10000.0
-	randomFactor := 0.3
-	// Этот множитель можно регулировать чтобы брать бОльший диапазон мультипликаторов.
-	// Погрешность при  randomFarctor = 0.3 и rtp = 0.5 бывает < 0.02, а разница между minMult и maxMult ~ 4000
+	ran := rand.Float64()
+	var ideal float64
 
+	if ran > s.targetRTP {
+		ideal = 1.0
+	} else {
+		ideal = 10000.0
+	}
+	randomFactor := 0.001
 	low := ideal * (1.0 - randomFactor)
 	high := ideal * (1.0 + randomFactor)
 	multiplier := low + rand.Float64()*(high-low)
@@ -39,6 +41,6 @@ func (s *RTPMultiplierService) GenerateMultiplier() float64 {
 		multiplier = 1.0
 	}
 	rounded := math.Round(multiplier*10) / 10 //Округление если надо
-	s.log.Info("Multiplier", slog.Float64("result", rounded))
+	log.Info("Multiplier", slog.Float64("result", rounded))
 	return rounded
 }

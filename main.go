@@ -25,7 +25,7 @@ func main() {
 	rtpController := controller.NewRTPController(*rtpService)
 
 	router := gin.Default()
-	router.GET("/get", rtpController.GetMultiplier)
+	router.GET("/get/", rtpController.GetMultiplier)
 
 	srv := &http.Server{
 		Addr:         ":64333",

@@ -4,7 +4,7 @@ package main
 import (
 	"fmt"
 	"log/slog"
-	"math/rand/v2"
+	"math/rand"
 	"os"
 
 	"github.com/immxrtalbeast/rtp-multiplier/internal/service"
@@ -30,9 +30,8 @@ func main() {
 		randomFloats[i] = 1 + rand.Float64()*9999
 		sumRandom += randomFloats[i]
 	}
-
 	for i := 0; i < count; i++ {
-		multiplier := service.GenerateMultiplier()
+		multiplier := service.Generate()
 		if multiplier > maxMultiplier {
 			maxMultiplier = multiplier
 		}
@@ -46,15 +45,14 @@ func main() {
 			seq1[i] = 0
 			zeros += 1
 		}
+
 	}
 	// fmt.Println("RandomFloats \n", randomFloats)
 	// fmt.Println("Seq1 \n", seq1)
 	calculatedRTP := sumSeq1 / sumRandom
-	calculatedRTP2 := sumSeq1 / float64(len(randomFloats))
 	fmt.Println("Zeros: \n", zeros)
-	fmt.Printf("minMult:%.4f\n", minMultiplier)
-	fmt.Printf("maxMult:%.4f\n", maxMultiplier)
-	fmt.Printf("Calculated RTP2:%.4f\n", calculatedRTP2) //RTP если сравниваем с количеством объектов в списке
+	fmt.Printf("minMult:%.1f\n", minMultiplier)
+	fmt.Printf("maxMult:%.1f\n", maxMultiplier)
 	fmt.Printf("Calculated RTP: %.4f\n", calculatedRTP)
 	// fmt.Printf("Target RTP: %.4f\n", targetRTP)
 	// fmt.Printf("Calculated RTP: %.4f\n", calculatedRTP)

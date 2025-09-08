@@ -16,7 +16,7 @@ func NewRTPController(service service.RTPMultiplierService) *RTPController {
 }
 
 func (c *RTPController) GetMultiplier(ctx *gin.Context) {
-	multiplier := c.service.GenerateMultiplier()
+	multiplier := c.service.Generate()
 	ctx.JSON(http.StatusOK, gin.H{
 		"result": multiplier,
 	})
