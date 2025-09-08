@@ -3,9 +3,7 @@ package main
 
 import (
 	"fmt"
-	"log/slog"
 	"math/rand/v2"
-	"os"
 
 	"github.com/immxrtalbeast/rtp-multiplier/internal/service"
 )
@@ -15,8 +13,7 @@ func main() {
 	if targetRTP <= 0.0 || targetRTP > 1.0 {
 		panic("rtp should be ∈(0, 1.0]")
 	}
-	log := setupLogger()
-	service := service.NewRTPMultiplierService(targetRTP, log)
+	service := service.NewRTPMultiplierService(targetRTP)
 
 	count := 10000000
 	zeros := 0
@@ -57,13 +54,4 @@ func main() {
 	// fmt.Printf("Target RTP: %.4f\n", targetRTP)
 	// fmt.Printf("Calculated RTP: %.4f\n", calculatedRTP)
 	fmt.Printf("Difference: %.4f\n", calculatedRTP-targetRTP)
-}
-func setupLogger() *slog.Logger {
-	var log *slog.Logger
-
-	log = slog.New(
-		slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}),
-	)
-
-	return log
 }
