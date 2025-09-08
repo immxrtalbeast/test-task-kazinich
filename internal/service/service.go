@@ -2,7 +2,6 @@ package service
 
 import (
 	"log/slog"
-	"math"
 	"math/rand/v2"
 )
 
@@ -19,28 +18,24 @@ func NewRTPMultiplierService(targetRTP float64, log *slog.Logger) *RTPMultiplier
 }
 
 func (s *RTPMultiplierService) Generate() float64 {
-	log := s.log.With(
-		slog.Float64("rtp", s.targetRTP),
-	)
 	ran := rand.Float64()
-	var ideal float64
 
 	if ran > s.targetRTP {
-		ideal = 1.0
-	} else {
-		ideal = 10000.0
+		return 1.0
 	}
-	randomFactor := 0.001
-	low := ideal * (1.0 - randomFactor)
-	high := ideal * (1.0 + randomFactor)
-	multiplier := low + rand.Float64()*(high-low)
-	if multiplier > 10000.0 {
-		multiplier = 10000.0
-	}
-	if multiplier < 1.0 {
-		multiplier = 1.0
-	}
-	rounded := math.Round(multiplier*10) / 10 //Округление если надо
-	log.Info("Multiplier", slog.Float64("result", rounded))
-	return rounded
+	return 10000.0
+
+	// randomFactor := 0.0
+	// low := ideal * (1.0 - randomFactor)
+	// high := ideal * (1.0 + randomFactor)
+	// multiplier := low + rand.Float64()*(high-low)
+	// if multiplier > 10000.0 {
+	// 	multiplier = 10000.0
+	// }
+	// if multiplier < 1.0 {
+	// 	multiplier = 1.0
+	// }
+	// rounded := math.Round(multiplier*10) / 10 //Округление если надо
+	// log.Info("Multiplier", slog.Float64("result", rounded))
+	// return rounded
 }

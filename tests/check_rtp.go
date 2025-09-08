@@ -4,7 +4,7 @@ package main
 import (
 	"fmt"
 	"log/slog"
-	"math/rand"
+	"math/rand/v2"
 	"os"
 
 	"github.com/immxrtalbeast/rtp-multiplier/internal/service"
@@ -18,7 +18,7 @@ func main() {
 	log := setupLogger()
 	service := service.NewRTPMultiplierService(targetRTP, log)
 
-	count := 10000
+	count := 10000000
 	zeros := 0
 	minMultiplier := 10000.0
 	maxMultiplier := 0.0
